@@ -1,0 +1,76 @@
+{
+  "name": "finca",
+  "version": "0.1.0-dev.0",
+  "description": "Asistente inmobiliario con demo Angular y extensión Chrome",
+  "private": true,
+  "type": "module",
+  "author": {
+    "name": "Santiago García",
+    "email": "sgarciajerez@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sgarciajerez/finca.git"
+  },
+  "license": "UNLICENSED",
+  "packageManager": "npm@12.2.0",
+  "engines": {
+    "node": ">=24.15.0 <25",
+    "npm": ">=12 <13"
+  },
+  "workspaces": [
+    "apps/web",
+    "apps/extension",
+    "apps/api",
+    "packages/domain",
+    "packages/application",
+    "packages/ui",
+    "packages/storage"
+  ],
+  "scripts": {
+    "dev:web": "ng serve web --host 127.0.0.1 --port 4200",
+    "dev:extension": "ng build extension --watch --configuration development",
+    "dev:api": "tsx watch apps/api/src/main.ts",
+    "build": "npm run build:web && npm run build:extension && npm run build:api",
+    "build:web": "ng build web",
+    "build:extension": "ng build extension && node scripts/package-extension.mjs",
+    "build:api": "node scripts/build-api.mjs",
+    "preview:web": "node scripts/serve-web.mjs",
+    "lint": "eslint apps packages tests scripts *.ts *.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc -p tsconfig.tools.json --noEmit && ngc -p apps/web/tsconfig.app.json --noEmit && ngc -p apps/extension/tsconfig.app.json --noEmit",
+    "test": "npm run test:unit",
+    "test:unit": "vitest run --config vitest.config.ts",
+    "test:watch": "vitest --config vitest.config.ts",
+    "test:coverage": "vitest run --coverage --config vitest.config.ts",
+    "test:integration": "vitest run --config vitest.integration.config.ts",
+    "test:e2e": "npm run build:web && npm run build:extension && playwright test",
+    "test:e2e:web": "npm run build:web && playwright test --project=web",
+    "test:e2e:extension": "npm run build:extension && playwright test --project=extension",
+    "test:e2e:ui": "playwright test --ui",
+    "check": "npm run format:check && npm run lint && npm run typecheck && npm run test:coverage && npm run test:integration",
+    "verify": "npm run check && npm run build && playwright test"
+  },
+  "devDependencies": {
+    "@angular/build": "22.2.4",
+    "@angular/cli": "22.2.4",
+    "@angular/compiler-cli": "22.2.3",
+    "@axe-core/playwright": "^4.11.1",
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "1.64.1",
+    "@types/chrome": "^0.1.24",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.0.0",
+    "@types/supertest": "^6.0.3",
+    "@vitest/coverage-v8": "5.0.5",
+    "esbuild": "^0.27.0",
+    "eslint": "^10.13.0",
+    "prettier": "^3.8.1",
+    "supertest": "^7.2.2",
+    "tsx": "^4.21.0",
+    "typescript": "~6.0.2",
+    "typescript-eslint": "^8.59.0",
+    "vitest": "5.0.5"
+  }
+}

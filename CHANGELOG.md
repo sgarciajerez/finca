@@ -4,6 +4,14 @@ Historial de cambios realizados en FINCA. Las funciones previstas se documentan 
 
 ## [Unreleased]
 
+### Development foundation — 2026-10-25
+
+- Workspace npm con Angular compartido entre web y extensión MV3; TypeScript estricto, ESLint, Prettier y scripts reproducibles.
+- Formulario de inmueble con validación independiente, selección nativa accesible y protección de campos ante errores.
+- API Express de salud, sin generación real configurada.
+- Vitest AAA con cobertura, integración HTTP, E2E web/Chrome real y CI de GitHub Actions.
+- Flujo de ramas master / develop / feature con identidad de commit configurada localmente.
+
 ### Fixed
 
 - Fondo de la tarjeta 03 del índice corregido para que el barrido animado sea visible, igual que en el resto de tarjetas.
@@ -34,4 +42,3 @@ Historial de cambios realizados en FINCA. Las funciones previstas se documentan 
 - README con el estado real del proyecto.
 
 No hay versiones de software publicadas todavía.
-

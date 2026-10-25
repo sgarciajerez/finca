@@ -1,0 +1,49 @@
+<a class="skip-link" href="#main">Saltar al contenido</a>
+@if (environment() === 'web') {
+  <header class="site-header">
+    <a class="brand" href="#main" aria-label="FINCA, inicio"
+      >finca<span class="brand-dot" aria-hidden="true">.</span></a
+    ><span class="prototype-label">PRIMERA ENTREGA · DEMO LOCAL</span
+    ><a href="https://github.com/sgarciajerez/finca">Ver proyecto</a>
+  </header>
+}
+<div class="application-layout" [class.extension-layout]="environment() === 'extension'">
+  @if (environment() === 'web') {
+    <aside class="application-context">
+      <p class="eyebrow">EL ASISTENTE, A TU LADO</p>
+      <h1>Primero,<br />la vivienda.</h1>
+      <p class="lede">
+        Una ficha sencilla. Solo los datos que necesitas para empezar a contar su historia.
+      </p>
+      <p class="small">Angular · TypeScript · Chrome Manifest V3</p>
+      <div class="notice neutral">
+        Esta primera entrega valida la ficha en web y extensión. La generación y los borradores
+        llegarán en la siguiente rama.
+      </div>
+    </aside>
+  }
+  <section class="extension-panel" aria-label="Asistente de anuncios inmobiliarios">
+    <header class="panel-header">
+      <span class="brand" aria-label="FINCA"
+        >finca<span class="brand-dot" aria-hidden="true">.</span></span
+      ><span class="badge">Demo local</span>
+    </header>
+    <main id="main" class="panel-content" tabindex="-1">
+      <div class="section-title">
+        <p class="eyebrow">01 / LOS DATOS</p>
+        <h2>Cada detalle cuenta.</h2>
+        <p>Empecemos por lo que conoces de la vivienda.</p>
+      </div>
+      <finca-property-form (prepared)="property.set($event)" />
+      @if (property(); as data) {
+        <section class="notice success" aria-labelledby="validated-heading">
+          <div>
+            <h3 id="validated-heading">Ficha validada</h3>
+            <p>{{ data.city }} · {{ data.areaM2 }} m² · {{ data.bedrooms }} habitaciones.</p>
+            <p>Las características sin confirmar quedan fuera.</p>
+          </div>
+        </section>
+      }
+    </main>
+  </section>
+</div>

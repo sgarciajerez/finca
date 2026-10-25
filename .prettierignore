@@ -1,0 +1,9 @@
+node_modules
+dist
+coverage
+.angular
+playwright-report
+test-results
+package-lock.json
+designs
+ESTRATEGIA_DESARROLLO.md
