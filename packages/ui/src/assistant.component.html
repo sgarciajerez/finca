@@ -3,7 +3,7 @@
   <header class="site-header">
     <a class="brand" href="#main" aria-label="FINCA, inicio"
       >finca<span class="brand-dot" aria-hidden="true">.</span></a
-    ><span class="prototype-label">PRIMERA ENTREGA · DEMO LOCAL</span
+    ><span class="prototype-label">DEMO LOCAL · TU TEXTO, TU CRITERIO</span
     ><a href="https://github.com/sgarciajerez/finca">Ver proyecto</a>
   </header>
 }
@@ -11,39 +11,278 @@
   @if (environment() === 'web') {
     <aside class="application-context">
       <p class="eyebrow">EL ASISTENTE, A TU LADO</p>
-      <h1>Primero,<br />la vivienda.</h1>
+      <h1>Buenas viviendas.<br /><em>Mejores palabras.</em></h1>
       <p class="lede">
-        Una ficha sencilla. Solo los datos que necesitas para empezar a contar su historia.
+        De los datos del inmueble a un anuncio que se entiende. Con tu criterio, tu voz y cada
+        detalle en su sitio.
       </p>
-      <p class="small">Angular · TypeScript · Chrome Manifest V3</p>
-      <div class="notice neutral">
-        Esta primera entrega valida la ficha en web y extensión. La generación y los borradores
-        llegarán en la siguiente rama.
+      <div class="context-note">
+        <p>
+          Esta demo prepara ejemplos sin IA. Tus borradores se guardan solo en este navegador; la
+          publicación final sigue en tus manos.
+        </p>
       </div>
+      <p class="small">Angular · TypeScript · Chrome Manifest V3</p>
     </aside>
   }
   <section class="extension-panel" aria-label="Asistente de anuncios inmobiliarios">
     <header class="panel-header">
       <span class="brand" aria-label="FINCA"
         >finca<span class="brand-dot" aria-hidden="true">.</span></span
-      ><span class="badge">Demo local</span>
+      ><span class="badge">Ejemplos sin IA</span>
     </header>
+    <nav class="panel-nav application-nav" aria-label="Secciones del asistente">
+      <button
+        type="button"
+        [attr.aria-current]="store.screen() === 'property' ? 'page' : null"
+        (click)="navigate('property')"
+      >
+        <span aria-hidden="true">01</span>Inmueble
+      </button>
+      <button
+        type="button"
+        [attr.aria-current]="store.screen() === 'editor' ? 'page' : null"
+        (click)="navigate('editor')"
+      >
+        <span aria-hidden="true">02</span>Anuncio
+      </button>
+      <button
+        type="button"
+        [attr.aria-current]="store.screen() === 'drafts' ? 'page' : null"
+        (click)="navigate('drafts')"
+      >
+        <span aria-hidden="true">03</span>Borradores
+      </button>
+    </nav>
     <main id="main" class="panel-content" tabindex="-1">
-      <div class="section-title">
-        <p class="eyebrow">01 / LOS DATOS</p>
-        <h2>Cada detalle cuenta.</h2>
-        <p>Empecemos por lo que conoces de la vivienda.</p>
-      </div>
-      <finca-property-form (prepared)="property.set($event)" />
-      @if (property(); as data) {
-        <section class="notice success" aria-labelledby="validated-heading">
-          <div>
-            <h3 id="validated-heading">Ficha validada</h3>
-            <p>{{ data.city }} · {{ data.areaM2 }} m² · {{ data.bedrooms }} habitaciones.</p>
-            <p>Las características sin confirmar quedan fuera.</p>
-          </div>
-        </section>
+      @if (store.error()) {
+        <p class="notice error" role="alert">{{ store.error() }}</p>
       }
+      @switch (store.screen()) {
+        @case ('property') {
+          <div class="section-title">
+            <p class="eyebrow">01 / LOS DATOS</p>
+            <h2 id="view-heading" tabindex="-1">Cada detalle cuenta.</h2>
+            <p>Empecemos por lo que conoces de la vivienda.</p>
+          </div>
+          <finca-property-form [initial]="store.property()" (prepared)="prepare($event)" />
+        }
+        @case ('editor') {
+          <div class="section-title">
+            <p class="eyebrow">02 / LAS PALABRAS</p>
+            <h2 id="view-heading" tabindex="-1">Dale tu toque.</h2>
+            <p>Este es el punto de partida. La última palabra es tuya.</p>
+          </div>
+          @if (store.property(); as property) {
+            <div class="property-summary">
+              <div>
+                <strong>{{ property.city }}</strong>
+                <p>
+                  {{ property.areaM2 }} m² · {{ property.bedrooms }} hab. ·
+                  {{ property.bathrooms }} baños
+                </p>
+              </div>
+              <button class="text-button" type="button" (click)="navigate('property')">
+                Editar ficha
+              </button>
+            </div>
+            <div class="notice neutral compact">
+              Texto de ejemplo, sin IA. No se incorporan las notas libres.
+            </div>
+            <fieldset class="choice-field stacked">
+              <legend>Tono</legend>
+              <div class="choice-options">
+                @for (tone of toneOptions; track tone.value) {
+                  <label class="choice-option"
+                    ><input
+                      type="radio"
+                      name="tone"
+                      [value]="tone.value"
+                      [checked]="store.preferences().tone === tone.value"
+                      (change)="setTone(tone.value)" /><span class="choice-label"
+                      ><span
+                        >{{ tone.label }}<small>{{ tone.help }}</small></span
+                      ><span class="choice-indicator" aria-hidden="true"></span></span
+                  ></label>
+                }
+              </div>
+            </fieldset>
+            <fieldset class="choice-field segmented">
+              <legend>Longitud</legend>
+              <div class="choice-options">
+                <label class="choice-option"
+                  ><input
+                    type="radio"
+                    name="length"
+                    value="standard"
+                    [checked]="store.preferences().length === 'standard'"
+                    (change)="setLength('standard')"
+                  /><span class="choice-label">Estándar</span></label
+                ><label class="choice-option"
+                  ><input
+                    type="radio"
+                    name="length"
+                    value="brief"
+                    [checked]="store.preferences().length === 'brief'"
+                    (change)="setLength('brief')"
+                  /><span class="choice-label">Breve</span></label
+                >
+              </div>
+            </fieldset>
+            <label for="ad-text">Descripción del anuncio</label
+            ><textarea
+              id="ad-text"
+              class="ad-editor"
+              rows="12"
+              maxlength="20000"
+              [ngModel]="store.text()"
+              (ngModelChange)="store.text.set($event)"
+              aria-describedby="editor-help word-count"
+            ></textarea>
+            <div class="editor-meta">
+              <span id="editor-help">Texto editable · Revisión final necesaria</span
+              ><span id="word-count">{{ wordCount() }} palabras</span>
+            </div>
+            <button
+              type="button"
+              class="button secondary full"
+              [disabled]="store.loading()"
+              (click)="regenerate()"
+            >
+              {{ store.loading() ? 'Preparando…' : 'Actualizar ejemplo' }}
+            </button>
+            <p class="field-hint">
+              Cambiar tono o longitud se aplica al actualizar. Si has editado el texto, te pediremos
+              confirmación.
+            </p>
+            <div class="editor-buttons">
+              <button
+                type="button"
+                class="button secondary"
+                [disabled]="store.saving() || !store.text().trim()"
+                (click)="store.save()"
+              >
+                {{ store.saving() ? 'Guardando…' : 'Guardar borrador' }}</button
+              ><button
+                type="button"
+                class="button primary"
+                [disabled]="!store.text().trim()"
+                (click)="copy()"
+              >
+                Copiar texto
+              </button>
+            </div>
+            <p class="small centered">Publicarás el anuncio desde tu cuenta en el portal.</p>
+          } @else {
+            <div class="empty-state">
+              <p>Completa primero los datos de una vivienda.</p>
+              <button type="button" class="button primary" (click)="navigate('property')">
+                Crear mi anuncio
+              </button>
+            </div>
+          }
+        }
+        @case ('drafts') {
+          <div class="section-title">
+            <p class="eyebrow">03 / TU BIBLIOTECA</p>
+            <h2 id="view-heading" tabindex="-1">Ideas bien guardadas.</h2>
+            <p>Retoma cada anuncio justo donde lo dejaste.</p>
+          </div>
+          <div class="field">
+            <label for="draft-search">Buscar por nombre o localidad</label
+            ><input
+              id="draft-search"
+              type="search"
+              [ngModel]="query()"
+              (ngModelChange)="query.set($event)"
+              placeholder="Por ejemplo: Sevilla"
+            />
+          </div>
+          <p class="small">{{ store.drafts().length }} borradores en este navegador</p>
+          <div class="draft-list">
+            @for (draft of visibleDrafts(); track draft.id) {
+              <article class="draft-card">
+                <span class="badge subtle">Borrador local · Sin IA</span>
+                <h3>{{ draft.name }}</h3>
+                <p>
+                  {{ draft.property.city }} · {{ draft.property.areaM2 }} m² ·
+                  {{ draft.property.bedrooms }} hab.
+                </p>
+                <div class="draft-card-actions">
+                  <button
+                    type="button"
+                    class="button secondary open-draft"
+                    (click)="open(draft)"
+                    [attr.aria-label]="'Abrir: ' + draft.name"
+                  >
+                    Abrir</button
+                  ><button
+                    type="button"
+                    class="text-button"
+                    (click)="requestRename(draft)"
+                    [attr.aria-label]="'Renombrar: ' + draft.name"
+                  >
+                    Renombrar</button
+                  ><button
+                    type="button"
+                    class="text-button"
+                    (click)="requestDelete(draft.id)"
+                    [attr.aria-label]="'Eliminar: ' + draft.name"
+                  >
+                    Eliminar
+                  </button>
+                </div>
+              </article>
+            } @empty {
+              <div class="empty-state">
+                <h3>{{ query() ? 'No encontramos ese borrador.' : 'Un lugar para tus ideas.' }}</h3>
+                <p>
+                  {{
+                    query()
+                      ? 'Prueba con otro nombre o localidad.'
+                      : 'Guarda tu primer anuncio y vuelve a él cuando quieras.'
+                  }}
+                </p>
+              </div>
+            }
+          </div>
+          <div class="notice neutral">
+            Los borradores no se sincronizan entre la web y la extensión ni entre dispositivos.
+          </div>
+          <button type="button" class="text-button" (click)="requestClear()">
+            Vaciar biblioteca local
+          </button>
+        }
+      }
+      <p class="application-status" role="status" aria-live="polite" aria-atomic="true">
+        {{ store.message() }}
+      </p>
     </main>
   </section>
 </div>
+<dialog
+  #confirmationDialog
+  aria-labelledby="confirm-title"
+  aria-describedby="confirm-description"
+  (cancel)="cancelConfirmation()"
+>
+  <h2 id="confirm-title">{{ confirmationTitle() }}</h2>
+  <p id="confirm-description">{{ confirmationText() }}</p>
+  <div class="dialog-actions">
+    <button type="button" class="button secondary" (click)="cancelConfirmation()">Cancelar</button
+    ><button type="button" class="button primary" (click)="confirm()">Confirmar</button>
+  </div>
+</dialog>
+<dialog #renameDialog aria-labelledby="rename-title" (cancel)="closeRename()">
+  <h2 id="rename-title">Renombrar borrador</h2>
+  <form (ngSubmit)="rename()">
+    <label for="draft-name">Nombre del borrador</label
+    ><input id="draft-name" name="draftName" [(ngModel)]="renameName" required maxlength="100" />
+    <div class="dialog-actions">
+      <button type="button" class="button secondary" (click)="closeRename()">Cancelar</button
+      ><button type="submit" class="button primary" [disabled]="!renameName.trim()">
+        Guardar nombre
+      </button>
+    </div>
+  </form>
+</dialog>

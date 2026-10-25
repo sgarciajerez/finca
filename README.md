@@ -4,14 +4,14 @@ Asistente de anuncios inmobiliarios: una demo web Angular y una extensión de Ch
 
 ## Estado actual
 
-Primera entrega técnica en develop: ficha validada compartida, paquete Chrome Manifest V3, API de salud y comprobaciones automatizadas. La generación de texto y el historial se implementarán en la siguiente rama. No hay conexión con IA ni portales.
+Dos entregas en develop: base técnica y flujo local de anuncios. Puedes validar la ficha, preparar un ejemplo determinista, cambiar tono/longitud, editar, copiar y guardar borradores; buscarlos, renombrarlos, recuperarlos o eliminarlos. Web y extensión comparten UI y casos de uso. No hay conexión con IA ni portales.
 
 Los diseños HTML aprobados siguen en [designs](./designs/README.md), incluida la casa interactiva. La portada y sus animaciones todavía no se han migrado a Angular.
 
 ## Requisitos e instalación
 
 - Node.js 24 LTS, desde 24.15, y npm 12.2.
-- Chrome 114 o posterior para la extensión.
+- Chrome 119 o posterior para la extensión.
 
 ```bash
 npm ci
@@ -37,7 +37,7 @@ npm run build:extension
 
 En `chrome://extensions`, activa el modo de desarrollador, elige «Cargar descomprimida» y selecciona `dist/extension/browser`. Pulsa el icono de FINCA para abrir el panel lateral. La extensión solo solicita `sidePanel` y `storage`.
 
-`npm run dev:extension` reconstruye el panel en desarrollo; el empaquetado inicial se realiza con `build:extension`. Recarga la extensión después de cambios en el manifiesto o el service worker.
+`npm run dev:extension` mantiene el panel, el service worker y el manifiesto en modo desarrollo, sin borrar el paquete al reconstruir. Recarga la extensión después de cambios en el manifiesto o el service worker.
 
 ### Diseños HTML
 
@@ -74,9 +74,9 @@ apps/web          Entrada y composición de la demo Angular
 apps/extension    Entrada Angular, manifiesto MV3 y service worker
 apps/api          Servidor Express y configuración de arranque
 packages/domain   Esquema, modelo y reglas de validación
-packages/application  Casos de uso y puertos (siguiente entrega)
+packages/application  Casos de uso de generación/guardado y puertos
 packages/ui       Componentes Angular compartidos
-packages/storage  Adaptadores de persistencia (siguiente entrega)
+packages/storage  IndexedDB, Chrome storage y validación de borradores
 tests/integration API HTTP
 tests/e2e         Navegador web y paquete real de extensión
 scripts           Build y servidor local compatibles con Windows/Linux
@@ -84,7 +84,7 @@ designs           Prototipos visuales de referencia
 docs              Decisiones y evidencia de pruebas
 ```
 
-Dominio no conoce Angular, Express ni Chrome; las reglas de importación se comprueban con ESLint. La UI usa un formulario reactivo y eventos tipados para entregar datos normalizados.
+Dominio no conoce Angular, Express ni Chrome; las reglas de importación se comprueban con ESLint. La UI usa un formulario reactivo, Signals y eventos tipados. Generación y repositorio se inyectan mediante tokens; el almacenamiento se elige en la composición de cada aplicación. El generador de ejemplo es local y no usa las notas libres como instrucciones.
 
 ## Ramas
 
@@ -97,7 +97,21 @@ Los commits se publican con Santiago García <sgarciajerez@gmail.com>. La primer
 
 ## Documentación
 
-[Estrategia](./ESTRATEGIA_DESARROLLO.md) · [Changelog](./CHANGELOG.md) · [Decisiones](./docs/decisions/001-workspace.md) · [Verificación](./docs/testing/foundation.md)
+[Estrategia](./ESTRATEGIA_DESARROLLO.md) · [Changelog](./CHANGELOG.md) · [Decisiones](./docs/decisions/001-workspace.md) · [Verificación inicial](./docs/testing/foundation.md) · [Flujo local](./docs/testing/local-workflow.md)
+
+## Persistencia y revisión
+
+La web guarda en IndexedDB (`finca-app`) y la extensión en `chrome.storage.local` con claves propias. Los registros tienen versión de esquema y se validan al leer y escribir. No se sincronizan entre entornos. No se eliminan registros incompatibles silenciosamente: la interfaz informa y permite vaciar la biblioteca con confirmación.
+
+La actualización del ejemplo y la apertura de otro borrador piden confirmación si hay cambios manuales. Guardar dos veces actualiza el mismo borrador. Los errores de generación o almacenamiento conservan el texto en pantalla. Los cambios sin guardar permanecen solo durante la sesión de la página; guarda o copia antes de cerrarla.
+
+## Pendiente
+
+- Migración de la portada con casa interactiva a un componente Angular.
+- Preferencias persistentes y recuperación automática de una sesión sin guardar.
+- API de generación real, revisión de calidad y controles de consumo.
+- Adaptadores de inserción en portales tras validar el acceso y sus condiciones.
+- Publicación de una primera versión estable y distribución en Chrome Web Store.
 
 ## Límites
 

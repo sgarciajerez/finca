@@ -11,3 +11,5 @@ La validación se define con Zod en dominio, sin imports de Angular/Express/Chro
 El presupuesto inicial de bundle es 750 kB de aviso y 800 kB de error sin comprimir, para Angular, Reactive Forms, validación y estilos compartidos. El primer build ocupa alrededor de 682 kB (136 kB de transferencia estimada). Se medirá de nuevo al añadir funcionalidad; no se presupone un valor de Lighthouse.
 
 Se conserva la carpeta designs sin reformatear para facilitar la comparación con el trabajo visual aprobado. La portada animada todavía es una maqueta HTML.
+
+La versión mínima de Chrome se fija en 119, coherente con el conjunto Baseline 2026-05-07 usado por Angular 22. Aunque la API sidePanel existe desde Chrome 114, no se anuncia compatibilidad de toda la aplicación con ese navegador anterior. Referencia: https://angular.dev/reference/versions#browser-support.

@@ -9,7 +9,9 @@
     "@angular/core": "22.2.3",
     "@angular/forms": "22.2.3",
     "@angular/platform-browser": "22.2.3",
-    "@angular/router": "22.2.3"
+    "@angular/router": "22.2.3",
+    "@finca/domain": "*",
+    "@finca/application": "*"
   },
   "exports": {
     ".": "./src/index.ts"

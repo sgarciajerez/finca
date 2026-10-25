@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, output, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, output, signal, input, effect } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { parseProperty, type Property, type PropertyField } from '@finca/domain';
 @Component({
@@ -10,6 +10,16 @@ import { parseProperty, type Property, type PropertyField } from '@finca/domain'
 })
 export class PropertyFormComponent {
   readonly prepared = output<Property>();
+  readonly initial = input<Property | undefined>();
+  constructor() {
+    effect(() => {
+      const property = this.initial();
+      if (!property) return;
+      this.form.patchValue(property);
+      for (const extra of this.extraOptions)
+        this.form.controls[extra.value].setValue(property.extras.includes(extra.value));
+    });
+  }
   readonly errors = signal<PropertyField[]>([]);
   readonly extraOptions = [
     { value: 'terrace', label: 'Terraza' },

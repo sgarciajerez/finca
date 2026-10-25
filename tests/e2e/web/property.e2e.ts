@@ -8,7 +8,8 @@ test('validates the property and preserves data after a rejected submission', as
   await expect(page.getByLabel('Localidad', { exact: true })).toHaveValue('Sevilla');
   await page.getByLabel('Superficie (m²)', { exact: true }).fill('92');
   await page.getByRole('button', { name: 'Preparar mi anuncio' }).click();
-  await expect(page.getByRole('heading', { name: 'Ficha validada' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Dale tu toque.' })).toBeVisible();
+  await expect(page.getByLabel('Descripción del anuncio')).toHaveValue(/92 m²/);
 });
 test('supports keyboard navigation and an accessible narrow layout', async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 850 });

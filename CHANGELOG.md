@@ -4,6 +4,15 @@ Historial de cambios realizados en FINCA. Las funciones previstas se documentan 
 
 ## [Unreleased]
 
+### Local listing workflow — 2026-10-25
+
+- Generación determinista sin IA, validada mediante un puerto sustituible; tono, longitud, edición y copia.
+- Borradores versionados: guardado/actualización, búsqueda, apertura, renombrado y eliminación con confirmación.
+- Persistencia real con IndexedDB en web y chrome.storage.local en extensión, con validación al leer/escribir.
+- Confirmación antes de reemplazar ediciones; conservación de texto ante fallos y protección contra doble guardado.
+- 38 unitarios AAA, 5 tests Angular TestBed, 2 de integración y 8 E2E; auditorías automáticas de accesibilidad en pantallas y diálogos.
+- Modo de desarrollo de extensión que reconstruye panel y service worker conservando el manifiesto.
+
 ### Development foundation — 2026-10-25
 
 - Workspace npm con Angular compartido entre web y extensión MV3; TypeScript estricto, ESLint, Prettier y scripts reproducibles.

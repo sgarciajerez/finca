@@ -1,6 +1,8 @@
 import { provideBrowserGlobalErrorListeners, Component } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { AssistantComponent } from '@finca/ui';
+import { ExampleListingGenerator } from '@finca/application';
+import { IndexedDbRecordStore, ValidatedDraftRepository } from '@finca/storage';
+import { AssistantComponent, DRAFT_REPOSITORY, LISTING_GENERATOR } from '@finca/ui';
 @Component({
   selector: 'finca-root',
   standalone: true,
@@ -8,6 +10,13 @@ import { AssistantComponent } from '@finca/ui';
   template: '<finca-assistant environment="web" />',
 })
 class App {}
-bootstrapApplication(App, { providers: [provideBrowserGlobalErrorListeners()] }).catch(
-  (error: unknown) => console.error(error),
-);
+bootstrapApplication(App, {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    { provide: LISTING_GENERATOR, useFactory: () => new ExampleListingGenerator() },
+    {
+      provide: DRAFT_REPOSITORY,
+      useFactory: () => new ValidatedDraftRepository(new IndexedDbRecordStore()),
+    },
+  ],
+}).catch((error: unknown) => console.error(error));
