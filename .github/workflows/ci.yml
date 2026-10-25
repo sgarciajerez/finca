@@ -1,0 +1,34 @@
+name: CI
+on:
+  push:
+    branches: [develop, master, 'feature/**', 'fix/**']
+  pull_request:
+    branches: [develop, master]
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm install -g npm@12.2.0
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run verify
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quality-reports
+          path: |
+            playwright-report/
+            test-results/
+            coverage/
+          retention-days: 7

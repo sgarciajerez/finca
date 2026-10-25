@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "FINCA · Asistente inmobiliario",
+  "description": "Prepara tus anuncios inmobiliarios con una ficha clara y edición local.",
+  "version": "0.1.0",
+  "minimum_chrome_version": "114",
+  "permissions": ["sidePanel", "storage"],
+  "action": {
+    "default_title": "Abrir FINCA"
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

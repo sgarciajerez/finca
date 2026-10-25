@@ -1,0 +1,167 @@
+<form [formGroup]="form" (ngSubmit)="submit()" novalidate>
+  @if (errors().length) {
+    <div class="notice error" role="alert">
+      Revisa los campos indicados. El resto de la ficha se conserva.
+    </div>
+  }
+  <fieldset>
+    <legend>La vivienda</legend>
+    <p class="field-hint">Todos los campos numéricos y la localidad son obligatorios.</p>
+    <fieldset class="choice-field segmented">
+      <legend>Operación</legend>
+      <div class="choice-options">
+        <label class="choice-option"
+          ><input type="radio" formControlName="operation" value="sale" /><span class="choice-label"
+            >En venta</span
+          ></label
+        >
+        <label class="choice-option"
+          ><input type="radio" formControlName="operation" value="rent" /><span class="choice-label"
+            >En alquiler</span
+          ></label
+        >
+      </div>
+    </fieldset>
+    <fieldset class="choice-field tiles">
+      <legend>Tipo de vivienda</legend>
+      <div class="choice-options">
+        @for (type of types; track type.value) {
+          <label class="choice-option"
+            ><input type="radio" formControlName="type" [value]="type.value" /><span
+              class="choice-label"
+              >{{ type.label }}</span
+            ></label
+          >
+        }
+      </div>
+    </fieldset>
+    <div class="field">
+      <label for="city">Localidad</label
+      ><input
+        id="city"
+        formControlName="city"
+        maxlength="80"
+        autocomplete="address-level2"
+        [attr.aria-invalid]="hasError('city')"
+        [attr.aria-describedby]="hasError('city') ? 'city-error' : null"
+      />
+      @if (hasError('city')) {
+        <p id="city-error" class="field-error">Indica la localidad.</p>
+      }
+    </div>
+    <div class="fields two">
+      <div class="field">
+        <label for="price">Precio (€)</label
+        ><input
+          id="price"
+          type="number"
+          formControlName="price"
+          min="0.01"
+          max="100000000"
+          step="0.01"
+          inputmode="decimal"
+          [attr.aria-invalid]="hasError('price')"
+          [attr.aria-describedby]="hasError('price') ? 'price-error' : null"
+        />
+        @if (hasError('price')) {
+          <p id="price-error" class="field-error">
+            Introduce un precio mayor que cero, hasta 100 millones.
+          </p>
+        }
+      </div>
+      <div class="field">
+        <label for="areaM2">Superficie (m²)</label
+        ><input
+          id="areaM2"
+          type="number"
+          formControlName="areaM2"
+          min="0.1"
+          max="100000"
+          step="0.1"
+          inputmode="decimal"
+          [attr.aria-invalid]="hasError('areaM2')"
+          [attr.aria-describedby]="hasError('areaM2') ? 'area-error' : null"
+        />
+        @if (hasError('areaM2')) {
+          <p id="area-error" class="field-error">
+            Introduce una superficie mayor que cero, hasta 100.000 m².
+          </p>
+        }
+      </div>
+    </div>
+    <div class="fields two">
+      <div class="field">
+        <label for="bedrooms">Habitaciones</label
+        ><input
+          id="bedrooms"
+          type="number"
+          formControlName="bedrooms"
+          min="0"
+          max="100"
+          step="1"
+          [attr.aria-invalid]="hasError('bedrooms')"
+          [attr.aria-describedby]="hasError('bedrooms') ? 'bedrooms-error' : null"
+        />
+        @if (hasError('bedrooms')) {
+          <p id="bedrooms-error" class="field-error">Introduce un número entero entre 0 y 100.</p>
+        }
+      </div>
+      <div class="field">
+        <label for="bathrooms">Baños</label
+        ><input
+          id="bathrooms"
+          type="number"
+          formControlName="bathrooms"
+          min="0"
+          max="100"
+          step="1"
+          [attr.aria-invalid]="hasError('bathrooms')"
+          [attr.aria-describedby]="hasError('bathrooms') ? 'bathrooms-error' : null"
+        />
+        @if (hasError('bathrooms')) {
+          <p id="bathrooms-error" class="field-error">Introduce un número entero entre 0 y 100.</p>
+        }
+      </div>
+    </div>
+    <fieldset class="choice-field stacked condition-choices">
+      <legend>Estado</legend>
+      <div class="choice-options">
+        @for (condition of conditions; track condition.value) {
+          <label class="choice-option"
+            ><input type="radio" formControlName="condition" [value]="condition.value" /><span
+              class="choice-label"
+              ><span>{{ condition.label }}</span
+              ><span class="choice-indicator" aria-hidden="true"></span></span
+          ></label>
+        }
+      </div>
+    </fieldset>
+  </fieldset>
+  <fieldset>
+    <legend>Lo que la hace especial</legend>
+    <p class="field-hint">Marca únicamente las características confirmadas.</p>
+    <div class="check-grid">
+      @for (extra of extraOptions; track extra.value) {
+        <label class="check-chip"
+          ><input type="checkbox" [formControlName]="extra.value" /><span>{{
+            extra.label
+          }}</span></label
+        >
+      }
+    </div>
+  </fieldset>
+  <details class="more-details">
+    <summary>Añadir notas del inmueble · Opcional</summary>
+    <label for="notes">Detalles para revisar</label
+    ><textarea id="notes" formControlName="notes" maxlength="600" rows="3"></textarea>
+    <p class="field-hint">
+      No incluyas datos personales. El ejemplo no incorpora las notas libres.
+    </p>
+  </details>
+  <div class="form-actions">
+    <button type="submit" class="button primary full">
+      Preparar mi anuncio <span aria-hidden="true">→</span>
+    </button>
+    <p class="small centered">Datos de ejemplo editables · Sin envío a una IA</p>
+  </div>
+</form>

@@ -1,0 +1,69 @@
+finca-root,
+finca-assistant,
+finca-property-form {
+  display: block;
+}
+.application-layout {
+  display: grid;
+  grid-template-columns: 1fr minmax(320px, 460px);
+  gap: 90px;
+  max-width: 1080px;
+  padding: 0 28px;
+  margin: 55px auto;
+  align-items: start;
+}
+.application-context {
+  padding-top: 55px;
+  position: sticky;
+  top: 30px;
+}
+.application-context h1 {
+  font-size: 62px;
+}
+.extension-layout {
+  display: block;
+  padding: 0;
+  margin: 0;
+  max-width: none;
+}
+.extension-layout .extension-panel {
+  border: 0;
+  box-shadow: none;
+  border-radius: 0;
+}
+.condition-choices .choice-options {
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  border: 0;
+}
+.condition-choices .choice-label {
+  border: 1px solid var(--control);
+  padding: 12px 10px;
+}
+@media (max-width: 760px) {
+  .application-layout {
+    display: block;
+    max-width: 510px;
+    padding: 0 20px;
+    margin: 30px auto;
+  }
+  .application-context {
+    position: static;
+    padding: 0;
+  }
+  .application-context h1 {
+    font-size: 42px;
+  }
+  .application-context .notice,
+  .application-context .small {
+    display: none;
+  }
+  .application-context .lede {
+    font-size: 15px;
+  }
+  .extension-layout {
+    padding: 0;
+    margin: 0;
+    max-width: none;
+  }
+}
