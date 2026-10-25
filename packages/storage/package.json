@@ -3,7 +3,10 @@
   "version": "0.1.0-dev.0",
   "private": true,
   "type": "module",
-  "dependencies": {},
+  "dependencies": {
+    "@finca/domain": "*",
+    "@finca/application": "*"
+  },
   "exports": {
     ".": "./src/index.ts"
   }

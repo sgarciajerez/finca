@@ -26,8 +26,23 @@ test('loads the MV3 package, configures the native side panel and runs the share
     await page.goto(`chrome-extension://${id}/index.html`);
     await page.getByLabel('Localidad', { exact: true }).fill('Jerez de la Frontera');
     await page.getByRole('button', { name: 'Preparar mi anuncio' }).click();
-    await expect(page.getByRole('heading', { name: 'Ficha validada' })).toBeVisible();
-    await expect(page.locator('main')).toContainText('Jerez de la Frontera');
+    await expect(page.getByRole('heading', { name: 'Dale tu toque.' })).toBeVisible();
+    await expect(page.getByLabel('Descripción del anuncio')).toHaveValue(/Jerez de la Frontera/);
+    await worker.evaluate(() => chrome.storage.local.set({ 'unrelated.preference': true }));
+    await page.getByRole('button', { name: 'Guardar borrador' }).click();
+    await expect(page.getByRole('status')).toContainText('Borrador guardado');
+    await page.reload();
+    await page.getByRole('button', { name: 'Borradores', exact: true }).click();
+    await expect(page.locator('.draft-card')).toHaveCount(1);
+    await page.getByRole('button', { name: 'Vaciar biblioteca local' }).click();
+    await page.getByRole('button', { name: 'Confirmar', exact: true }).click();
+    await expect(page.locator('.draft-card')).toHaveCount(0);
+    expect(
+      await worker.evaluate(
+        async () =>
+          (await chrome.storage.local.get('unrelated.preference'))['unrelated.preference'],
+      ),
+    ).toBe(true);
     expect(errors).toEqual([]);
   } finally {
     await context.close();

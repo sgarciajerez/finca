@@ -1,7 +1,7 @@
 # FINCA
 ## Asistente de anuncios inmobiliarios
 
-Estrategia de desarrollo · 23 de octubre de 2026 · Estado: estrategia y prototipo visual HTML
+Estrategia de desarrollo · 23 de octubre de 2026 · Estado: primera implementación local en develop
 
 > De la ficha del inmueble a un anuncio claro, editable y listo para revisar.
 
@@ -406,3 +406,12 @@ Se eligió una paleta de verde bosque, marfil, piedra y salvia con acento arcill
 ### Evolución visual del prototipo
 
 La portada incorpora una casa SVG interactiva controlada mediante HTML, CSS y JavaScript local. Ventanas, puerta y jardín tienen controles de teclado y respuestas a ratón/toque, pausa y alternativa sin movimiento. Los selectores pasan a opciones visibles con radios nativos. La dirección visual mezcla bordes rectos, superficies alternas y motion expresivo sin desvanecer texto. Al migrar a Angular, encapsular la escena y su limpieza de eventos/timers en un componente independiente; conservar estos contratos de accesibilidad.
+
+
+## 16. Desarrollo iniciado — 25/10/2026
+
+Se han separado las entregas en `feature/project-foundation` y `feature/local-listing-workflow`, con integraciones mediante merge en develop. master conserva la base documental inicial y espera una versión estable acordada.
+
+Implementado: workspace Angular/TypeScript, paquete MV3, API de salud, ficha compartida, generación local por plantillas, editor y repositorios de borradores. Incluye scripts, CI, unitarios AAA, Angular TestBed, integración y E2E web/extensión. Consultar README y docs/testing para los comandos y las comprobaciones actuales.
+
+Pendiente: portada animada en Angular, preferencias persistentes, generación real y adaptadores de portales. La apertura nativa del panel desde el icono necesita una comprobación manual separada de los E2E.

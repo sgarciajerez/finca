@@ -8,7 +8,7 @@ await build({
   platform: 'browser',
   format: 'esm',
   bundle: true,
-  target: 'chrome114',
+  target: 'chrome119',
 });
 await copyFile('apps/extension/manifest.json', join(output, 'manifest.json'));
 // Angular emits a critical-CSS loading helper. Inline styles are disabled; remove unnecessary onload handlers for MV3 CSP.

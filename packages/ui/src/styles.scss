@@ -67,3 +67,47 @@ finca-property-form {
     max-width: none;
   }
 }
+
+.application-nav {
+  grid-template-columns: repeat(3, 1fr);
+}
+.application-nav button {
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  min-height: 64px;
+  font-size: 12px;
+  padding: 10px 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 5px;
+  color: var(--muted);
+}
+.application-nav button > span {
+  font-family: var(--serif);
+  font-size: 15px;
+}
+.application-nav button:hover {
+  background: var(--sage);
+}
+.application-nav button[aria-current='page'] {
+  border-bottom-color: var(--forest);
+  color: var(--forest);
+  font-weight: 650;
+}
+.application-status {
+  font-size: 12px;
+  color: var(--forest);
+  line-height: 1.6;
+  margin: 18px 0 0;
+}
+.application-status:empty {
+  margin: 0;
+}
+#view-heading:focus {
+  outline: none;
+}
+.property-summary {
+  justify-content: space-between;
+}
