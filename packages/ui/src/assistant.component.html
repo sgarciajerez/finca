@@ -22,6 +22,143 @@
           publicación final sigue en tus manos.
         </p>
       </div>
+      <div class="welcome-house" [class.is-greeting]="neighborGreeting()">
+        <svg viewBox="0 0 440 280" role="img" aria-labelledby="house-title house-description">
+          <title id="house-title">Una casa con vida</title>
+          <desc id="house-description">
+            Ilustración de una vivienda con un vecino que saluda desde la ventana.
+          </desc>
+          <rect x="12" y="12" width="416" height="250" fill="#e9eddf" />
+          <circle cx="368" cy="58" r="25" fill="#b76844" />
+          <path d="M42 233h356" stroke="#627960" stroke-width="2" />
+          <g class="welcome-cloud" fill="#fffefa" opacity=".82">
+            <path d="M41 82c-4-11 9-18 17-13 5-16 28-13 29 4 12-4 20 6 16 13H43z" />
+          </g>
+          <path
+            d="M101 231V115l119-76 119 76v116z"
+            fill="#d1d6c3"
+            stroke="#173f35"
+            stroke-width="2"
+          />
+          <path d="m86 119 134-85 134 85" fill="#8c9e86" stroke="#173f35" stroke-width="6" />
+          <rect
+            x="133"
+            y="131"
+            width="75"
+            height="72"
+            fill="#f0d7b2"
+            stroke="#173f35"
+            stroke-width="3"
+          />
+          <path d="M170 131v72" stroke="#173f35" stroke-width="2" />
+          <g class="welcome-neighbor">
+            <path
+              d="M153 203v-24c0-21 35-21 35 0v24"
+              fill="#b36542"
+              stroke="#173f35"
+              stroke-width="2"
+            />
+            <circle cx="170" cy="156" r="15" fill="#ecc59a" stroke="#173f35" stroke-width="2" />
+            <path d="M155 155c-2-19 29-24 30-2-8-2-13-6-15-11-2 7-7 11-15 13" fill="#173f35" />
+            <path
+              d="M165 157v1m10-1v1m-8 6q4 4 8-1"
+              stroke="#173f35"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <path
+              class="welcome-arm"
+              d="m184 177 12-16-3-15m2 3-6-7m7 7 1-10m2 11 5-8"
+              fill="none"
+              stroke="#173f35"
+              stroke-width="4"
+              stroke-linecap="round"
+            />
+          </g>
+          <defs>
+            <clipPath id="welcome-cat-window">
+              <rect x="251" y="131" width="61" height="72" />
+            </clipPath>
+          </defs>
+          <path
+            class="welcome-light"
+            d="M251 131h61v72h-61z"
+            fill="#f2c978"
+            stroke="#173f35"
+            stroke-width="3"
+          />
+          <path d="M281 131v72m-30-36h61" stroke="#173f35" stroke-width="2" />
+          <g class="welcome-cat-window" clip-path="url(#welcome-cat-window)">
+            <g class="welcome-cat">
+              <path
+                d="M267 210v-15l-1-15 8 6 7-1 8-6 1 16c5 6 2 14-5 15"
+                fill="#49574a"
+                stroke="#173f35"
+                stroke-width="2"
+              />
+              <path
+                d="M272 195h1m9 0h1m-7 5 3 2 3-2"
+                stroke="#f8e6b9"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                class="welcome-tail"
+                d="M286 207c14 0 16-14 8-13"
+                fill="none"
+                stroke="#49574a"
+                stroke-width="4"
+                stroke-linecap="round"
+              />
+            </g>
+          </g>
+          <path d="M140 217h63" stroke="#173f35" stroke-width="4" />
+          <path d="M243 232v-28h39v28" fill="#b76844" stroke="#173f35" stroke-width="2" />
+          <circle cx="274" cy="217" r="2" fill="#f0d7b2" />
+          <path
+            class="welcome-bird"
+            d="M-18 87q14-17 25 0 12-18 24-1"
+            fill="none"
+            stroke="#173f35"
+            stroke-width="3"
+            stroke-linecap="round"
+          />
+          <path
+            class="welcome-tree"
+            d="M58 230v-46m0 17c-25-5-24-36-9-33 0-22 32-25 33-5 22-3 26 33-24 38z"
+            fill="#91a58b"
+            stroke="#173f35"
+            stroke-width="2"
+          />
+          <path
+            class="welcome-plant"
+            d="M369 230v-27m0 12c-16 0-19-14-15-16 11-1 15 8 15 16zm0-3c14 0 19-13 14-16-10-1-14 8-14 16z"
+            fill="#829c7f"
+            stroke="#173f35"
+            stroke-width="2"
+          />
+          <path
+            class="welcome-bubble"
+            d="M111 101h71v27h-16l-10 10v-10h-45z"
+            fill="#fffefa"
+            stroke="#173f35"
+          />
+          <text
+            class="welcome-bubble"
+            x="146"
+            y="119"
+            text-anchor="middle"
+            fill="#173f35"
+            font-size="14"
+            font-family="Georgia,serif"
+          >
+            ¡Hola!
+          </text>
+        </svg>
+        <button type="button" class="house-greeting" (click)="greetNeighbor()">
+          Saludar al vecino
+        </button>
+      </div>
       <p class="small">Angular · TypeScript · Chrome Manifest V3</p>
     </aside>
   }
@@ -29,7 +166,13 @@
     <header class="panel-header">
       <span class="brand" aria-label="FINCA"
         >finca<span class="brand-dot" aria-hidden="true">.</span></span
-      ><span class="badge">Ejemplos sin IA</span>
+      >
+      <div class="panel-header-actions">
+        <span class="badge">Ejemplos sin IA</span>
+        <button type="button" class="text-button new-listing" (click)="requestNewListing()">
+          Nuevo anuncio
+        </button>
+      </div>
     </header>
     <nav class="panel-nav application-nav" aria-label="Secciones del asistente">
       <button
@@ -58,19 +201,23 @@
       @if (store.error()) {
         <p class="notice error" role="alert">{{ store.error() }}</p>
       }
+      <section class="property-workspace" [hidden]="store.screen() !== 'property'">
+        <div class="section-title">
+          <p class="eyebrow">01 / LOS DATOS</p>
+          <h2 id="property-heading" tabindex="-1">Cada detalle cuenta.</h2>
+          <p>Empecemos por lo que conoces de la vivienda.</p>
+        </div>
+        <finca-property-form
+          [initial]="store.property()"
+          (prepared)="prepare($event)"
+          (exampleRequested)="requestExample()"
+        />
+      </section>
       @switch (store.screen()) {
-        @case ('property') {
-          <div class="section-title">
-            <p class="eyebrow">01 / LOS DATOS</p>
-            <h2 id="view-heading" tabindex="-1">Cada detalle cuenta.</h2>
-            <p>Empecemos por lo que conoces de la vivienda.</p>
-          </div>
-          <finca-property-form [initial]="store.property()" (prepared)="prepare($event)" />
-        }
         @case ('editor') {
           <div class="section-title">
             <p class="eyebrow">02 / LAS PALABRAS</p>
-            <h2 id="view-heading" tabindex="-1">Dale tu toque.</h2>
+            <h2 id="editor-heading" tabindex="-1">Dale tu toque.</h2>
             <p>Este es el punto de partida. La última palabra es tuya.</p>
           </div>
           @if (store.property(); as property) {
@@ -185,7 +332,7 @@
         @case ('drafts') {
           <div class="section-title">
             <p class="eyebrow">03 / TU BIBLIOTECA</p>
-            <h2 id="view-heading" tabindex="-1">Ideas bien guardadas.</h2>
+            <h2 id="drafts-heading" tabindex="-1">Ideas bien guardadas.</h2>
             <p>Retoma cada anuncio justo donde lo dejaste.</p>
           </div>
           <div class="field">
@@ -208,6 +355,12 @@
                   {{ draft.property.city }} · {{ draft.property.areaM2 }} m² ·
                   {{ draft.property.bedrooms }} hab.
                 </p>
+                <p class="draft-card-price">
+                  {{ formatPrice(draft.property.price, draft.property.operation) }}
+                </p>
+                <time class="draft-card-date" [attr.datetime]="draft.updatedAt">
+                  Actualizado {{ formatUpdatedAt(draft.updatedAt) }}
+                </time>
                 <div class="draft-card-actions">
                   <button
                     type="button"

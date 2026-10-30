@@ -1,6 +1,6 @@
 <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
   @if (errors().length) {
-    <div class="notice error" role="alert">
+    <div class="notice error" role="alert" aria-live="assertive">
       Revisa los campos indicados. El resto de la ficha se conserva.
     </div>
   }
@@ -11,7 +11,8 @@
       <legend>Operación</legend>
       <div class="choice-options">
         <label class="choice-option"
-          ><input type="radio" formControlName="operation" value="sale" /><span class="choice-label"
+          ><input type="radio" formControlName="operation" value="sale" required /><span
+            class="choice-label"
             >En venta</span
           ></label
         >
@@ -27,7 +28,7 @@
       <div class="choice-options">
         @for (type of types; track type.value) {
           <label class="choice-option"
-            ><input type="radio" formControlName="type" [value]="type.value" /><span
+            ><input type="radio" formControlName="type" [value]="type.value" required /><span
               class="choice-label"
               >{{ type.label }}</span
             ></label
@@ -40,6 +41,7 @@
       ><input
         id="city"
         formControlName="city"
+        required
         maxlength="80"
         autocomplete="address-level2"
         [attr.aria-invalid]="hasError('city')"
@@ -56,6 +58,7 @@
           id="price"
           type="number"
           formControlName="price"
+          required
           min="0.01"
           max="100000000"
           step="0.01"
@@ -75,6 +78,7 @@
           id="areaM2"
           type="number"
           formControlName="areaM2"
+          required
           min="0.1"
           max="100000"
           step="0.1"
@@ -96,6 +100,7 @@
           id="bedrooms"
           type="number"
           formControlName="bedrooms"
+          required
           min="0"
           max="100"
           step="1"
@@ -112,6 +117,7 @@
           id="bathrooms"
           type="number"
           formControlName="bathrooms"
+          required
           min="0"
           max="100"
           step="1"
@@ -128,8 +134,11 @@
       <div class="choice-options">
         @for (condition of conditions; track condition.value) {
           <label class="choice-option"
-            ><input type="radio" formControlName="condition" [value]="condition.value" /><span
-              class="choice-label"
+            ><input
+              type="radio"
+              formControlName="condition"
+              [value]="condition.value"
+              required /><span class="choice-label"
               ><span>{{ condition.label }}</span
               ><span class="choice-indicator" aria-hidden="true"></span></span
           ></label>
@@ -159,6 +168,9 @@
     </p>
   </details>
   <div class="form-actions">
+    <button type="button" class="button secondary full" (click)="exampleRequested.emit()">
+      Cargar datos de ejemplo
+    </button>
     <button type="submit" class="button primary full">
       Preparar mi anuncio <span aria-hidden="true">→</span>
     </button>

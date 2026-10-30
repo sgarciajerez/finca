@@ -5,9 +5,9 @@ finca-property-form {
 }
 .application-layout {
   display: grid;
-  grid-template-columns: 1fr minmax(320px, 460px);
-  gap: 90px;
-  max-width: 1080px;
+  grid-template-columns: minmax(0, 1fr) minmax(540px, 620px);
+  gap: clamp(38px, 5vw, 78px);
+  max-width: 1380px;
   padding: 0 28px;
   margin: 55px auto;
   align-items: start;
@@ -18,7 +18,185 @@ finca-property-form {
   top: 30px;
 }
 .application-context h1 {
-  font-size: 62px;
+  font-size: clamp(46px, 4.8vw, 66px);
+}
+.welcome-house {
+  position: relative;
+  margin: 28px 0 20px;
+  isolation: isolate;
+}
+.welcome-house::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 16px -12px 18px 22px;
+  background: #e5e7da;
+  transform: rotate(-2deg);
+}
+.welcome-house svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.welcome-neighbor {
+  transform: translateY(76px);
+  opacity: 0;
+}
+.welcome-house.is-greeting .welcome-neighbor {
+  animation: welcome-neighbor 3.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.welcome-house.is-greeting .welcome-arm {
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+  animation: welcome-wave 0.32s ease-in-out 0.5s 7 alternate;
+}
+.welcome-bubble {
+  opacity: 0;
+}
+.welcome-house.is-greeting .welcome-bubble {
+  animation: welcome-speech 3.5s ease both;
+}
+.welcome-cloud {
+  transform: translateX(0);
+  transition: transform 1.2s ease-out;
+}
+.welcome-cat {
+  transform: translateY(58px);
+  opacity: 0;
+}
+.welcome-tree,
+.welcome-plant {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+.welcome-tail {
+  transform-box: fill-box;
+  transform-origin: 0 100%;
+}
+.welcome-house:hover .welcome-cloud,
+.welcome-house:focus-within .welcome-cloud {
+  transform: translateX(18px);
+}
+.welcome-house:hover .welcome-cat,
+.welcome-house:focus-within .welcome-cat {
+  animation: welcome-cat-peek 2.2s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.welcome-house:hover .welcome-tail,
+.welcome-house:focus-within .welcome-tail {
+  animation: welcome-wave 0.6s ease-in-out 0.4s 3 alternate;
+}
+.welcome-house:hover .welcome-light,
+.welcome-house:focus-within .welcome-light {
+  animation: welcome-light 1.8s ease both;
+}
+.welcome-house:hover .welcome-tree,
+.welcome-house:focus-within .welcome-tree,
+.welcome-house:hover .welcome-plant,
+.welcome-house:focus-within .welcome-plant {
+  animation: welcome-breeze 0.65s ease-in-out 3 alternate;
+}
+.welcome-house:hover .welcome-bird,
+.welcome-house:focus-within .welcome-bird {
+  animation: welcome-bird 2.6s ease-in-out both;
+}
+.house-greeting {
+  position: absolute;
+  left: 31%;
+  top: 42%;
+  min-height: 48px;
+  padding: 8px 12px;
+  background: #173f35;
+  border: 2px solid #fffefa;
+  color: #fffefa;
+  font: 600 11px/1.3 var(--font);
+  cursor: pointer;
+}
+.house-greeting:hover {
+  background: #b76844;
+}
+.house-greeting:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+@keyframes welcome-neighbor {
+  0%,
+  10% {
+    opacity: 0;
+    transform: translateY(76px);
+  }
+  22%,
+  78% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  90%,
+  100% {
+    opacity: 0;
+    transform: translateY(76px);
+  }
+}
+@keyframes welcome-wave {
+  from {
+    transform: rotate(-16deg);
+  }
+  to {
+    transform: rotate(18deg);
+  }
+}
+@keyframes welcome-speech {
+  0%,
+  24%,
+  86%,
+  100% {
+    opacity: 0;
+  }
+  32%,
+  76% {
+    opacity: 1;
+  }
+}
+@keyframes welcome-cat-peek {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(58px);
+  }
+  24%,
+  82% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes welcome-light {
+  0%,
+  100% {
+    fill: #f2c978;
+  }
+  45% {
+    fill: #fff8db;
+  }
+}
+@keyframes welcome-breeze {
+  from {
+    transform: rotate(-3deg);
+  }
+  to {
+    transform: rotate(3deg);
+  }
+}
+@keyframes welcome-bird {
+  0% {
+    opacity: 0;
+    transform: translate(-15px, 0);
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(310px, -16px);
+  }
 }
 .extension-layout {
   display: block;
@@ -40,7 +218,7 @@ finca-property-form {
   border: 1px solid var(--control);
   padding: 12px 10px;
 }
-@media (max-width: 760px) {
+@media (max-width: 1050px) {
   .application-layout {
     display: block;
     max-width: 510px;
@@ -54,17 +232,80 @@ finca-property-form {
   .application-context h1 {
     font-size: 42px;
   }
+  .application-layout:not(.extension-layout) {
+    max-width: 760px;
+  }
+  .application-layout:not(.extension-layout) .application-context {
+    max-width: 660px;
+    margin: 0 auto 32px;
+  }
+  .application-layout:not(.extension-layout) .extension-panel {
+    max-width: 760px;
+    margin: 0 auto;
+  }
+}
+@media (max-width: 760px) {
+  .application-layout {
+    max-width: 510px;
+    padding: 0 20px;
+    margin: 30px auto;
+  }
+  .application-context {
+    max-width: 510px !important;
+    margin-bottom: 22px !important;
+  }
+  .application-context h1 {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+  .application-context .eyebrow {
+    margin-bottom: 8px;
+  }
+  .application-context .context-note {
+    display: none;
+  }
   .application-context .notice,
   .application-context .small {
     display: none;
   }
+  .welcome-house {
+    display: none;
+  }
   .application-context .lede {
-    font-size: 15px;
+    font-size: 14px;
+    line-height: 1.55;
+    margin-bottom: 12px;
   }
   .extension-layout {
     padding: 0;
     margin: 0;
     max-width: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .welcome-house.is-greeting .welcome-neighbor {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .welcome-house.is-greeting .welcome-arm,
+  .welcome-house.is-greeting .welcome-bubble {
+    animation: none;
+  }
+  .welcome-house.is-greeting .welcome-bubble {
+    opacity: 1;
+  }
+  .welcome-house:hover .welcome-cat,
+  .welcome-house:focus-within .welcome-cat {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+  .welcome-house:hover .welcome-bird,
+  .welcome-house:focus-within .welcome-bird {
+    opacity: 1;
+    transform: none;
+    animation: none;
   }
 }
 
@@ -105,9 +346,48 @@ finca-property-form {
 .application-status:empty {
   margin: 0;
 }
-#view-heading:focus {
-  outline: none;
+#property-heading:focus-visible,
+#editor-heading:focus-visible,
+#drafts-heading:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
+}
+#main:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 4px;
 }
 .property-summary {
   justify-content: space-between;
+}
+.panel-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.new-listing {
+  white-space: nowrap;
+}
+.draft-card-price {
+  font-weight: 650;
+  color: var(--forest);
+}
+.draft-card-date {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: -8px;
+}
+@media (max-width: 420px) {
+  .panel-header-actions {
+    gap: 7px;
+    flex-direction: column-reverse;
+    align-items: end;
+  }
+  .panel-header-actions .badge {
+    font-size: 9px;
+  }
+  .new-listing {
+    min-height: 40px;
+    padding: 6px 2px;
+  }
 }

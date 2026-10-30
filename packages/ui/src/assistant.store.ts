@@ -22,9 +22,10 @@ export class AssistantStore {
   readonly error = signal('');
   readonly message = signal('');
   private currentId: string | undefined;
-  private generatedText = '';
+  private savedText = '';
+  private workspaceRevision = 0;
   isDirty(): boolean {
-    return this.text() !== this.generatedText;
+    return this.text() !== this.savedText;
   }
   async refresh(): Promise<void> {
     try {
@@ -46,7 +47,7 @@ export class AssistantStore {
       if (JSON.stringify(property) !== JSON.stringify(this.property())) this.currentId = undefined;
       this.property.set(property);
       this.text.set(text);
-      this.generatedText = text;
+      this.workspaceRevision += 1;
       this.screen.set('editor');
       this.message.set('Ejemplo preparado sin IA. Revisa y edita el texto.');
     } catch {
@@ -58,17 +59,25 @@ export class AssistantStore {
   async save(): Promise<void> {
     const property = this.property();
     if (!property || this.saving()) return;
+    const textAtSave = this.text();
+    const preferencesAtSave = this.preferences();
+    const idAtSave = this.currentId;
+    const revisionAtSave = this.workspaceRevision;
     this.saving.set(true);
     this.error.set('');
     try {
       const draft = await this.saveDraft.execute({
         property,
-        preferences: this.preferences(),
-        text: this.text(),
-        ...(this.currentId ? { existingId: this.currentId } : {}),
+        preferences: preferencesAtSave,
+        text: textAtSave,
+        ...(idAtSave ? { existingId: idAtSave } : {}),
       });
-      this.currentId = draft.id;
-      this.generatedText = this.text();
+      // A write only confirms the snapshot sent to storage. Edits made while it
+      // was pending remain dirty and must still be protected from navigation.
+      if (this.workspaceRevision === revisionAtSave && this.currentId === idAtSave) {
+        this.currentId = draft.id;
+        this.savedText = draft.text;
+      }
       this.message.set('Borrador guardado en este navegador.');
       await this.refresh();
     } catch {
@@ -80,13 +89,20 @@ export class AssistantStore {
     }
   }
   open(draft: Draft): void {
+    this.workspaceRevision += 1;
     this.currentId = draft.id;
     this.property.set(draft.property);
     this.preferences.set(draft.preferences);
     this.text.set(draft.text);
-    this.generatedText = draft.text;
+    this.savedText = draft.text;
     this.screen.set('editor');
     this.message.set('Borrador recuperado.');
+  }
+  abandonCurrentDraft(): void {
+    this.workspaceRevision += 1;
+    this.currentId = undefined;
+    this.savedText = '';
+    this.error.set('');
   }
   async rename(draft: Draft, name: string): Promise<boolean> {
     this.error.set('');
@@ -108,7 +124,10 @@ export class AssistantStore {
     this.error.set('');
     try {
       await this.repository.remove(id);
-      if (this.currentId === id) this.currentId = undefined;
+      if (this.currentId === id) {
+        this.currentId = undefined;
+        this.savedText = '';
+      }
       await this.refresh();
       this.message.set('Borrador eliminado.');
     } catch {
@@ -120,6 +139,7 @@ export class AssistantStore {
     try {
       await this.repository.clear();
       this.currentId = undefined;
+      this.savedText = '';
       this.drafts.set([]);
       this.message.set('Borradores locales eliminados. Tu texto actual sigue en el editor.');
     } catch {

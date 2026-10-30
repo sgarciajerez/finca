@@ -4,6 +4,16 @@ Historial de cambios realizados en FINCA. Las funciones previstas se documentan 
 
 ## [Unreleased]
 
+### Workspace safety and web experience — 2026-10-30
+
+- Formulario vacío por defecto; cargar datos ficticios es una acción explícita y protegida ante cambios sin guardar.
+- Ficha y selecciones permanecen al cambiar de sección; abrir otro borrador o empezar uno nuevo pide confirmación si reemplaza datos pendientes. El navegador avisa antes de salir con cambios.
+- Guardar conserva como línea base el texto escrito en almacenamiento, incluso si hay ediciones durante la operación.
+- Los errores de validación llevan el foco al primer campo incorrecto y lo desplazan a la zona visible.
+- Composición web ampliada en escritorio, panel adaptable a móvil y Chrome, y tarjeta de borrador con precio y fecha.
+- Ilustración SVG de la casa con saludo animado, gato, pájaros, luz y jardín; respeta movimiento reducido y teclado.
+- Añadidas pruebas AAA y E2E para ficha segura, conservación de cambios y guardado concurrente.
+
 ### Local listing workflow — 2026-10-25
 
 - Generación determinista sin IA, validada mediante un puerto sustituible; tono, longitud, edición y copia.
