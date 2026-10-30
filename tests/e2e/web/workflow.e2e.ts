@@ -123,6 +123,19 @@ test('protects an edit made while a draft save is still pending', async ({ page 
   await page.getByRole('button', { name: 'Anuncio', exact: true }).click();
   await expect(editor).toHaveValue('Edición posterior, todavía sin guardar.');
 });
+test('protects changed preferences before opening another draft', async ({ page }) => {
+  await page.goto('/');
+  await prepareExample(page);
+  await page.getByRole('button', { name: 'Guardar borrador' }).click();
+  await expect(page.getByRole('status')).toContainText('Borrador guardado');
+  await page.getByRole('radio', { name: 'Cercano', exact: false }).check();
+  await page.getByRole('button', { name: 'Borradores', exact: true }).click();
+  await page.getByRole('button', { name: /Abrir:/ }).click();
+  await expect(page.getByRole('dialog')).toBeVisible();
+  await page.getByRole('button', { name: 'Cancelar', exact: true }).click();
+  await page.getByRole('button', { name: 'Anuncio', exact: true }).click();
+  await expect(page.getByRole('radio', { name: 'Cercano', exact: false })).toBeChecked();
+});
 test('starts with a blank ficha and asks before clearing it for a new announcement', async ({
   page,
 }) => {
