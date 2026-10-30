@@ -9,6 +9,7 @@ Historial de cambios realizados en FINCA. Las funciones previstas se documentan 
 - Formulario vacío por defecto; cargar datos ficticios es una acción explícita y protegida ante cambios sin guardar.
 - Ficha y selecciones permanecen al cambiar de sección; abrir otro borrador o empezar uno nuevo pide confirmación si reemplaza datos pendientes. El navegador avisa antes de salir con cambios.
 - Guardar conserva como línea base el texto escrito en almacenamiento, incluso si hay ediciones durante la operación.
+- Los cambios de tono y longitud también se consideran pendientes y requieren confirmación antes de reemplazarlos.
 - Los errores de validación llevan el foco al primer campo incorrecto y lo desplazan a la zona visible.
 - Composición web ampliada en escritorio, panel adaptable a móvil y Chrome, y tarjeta de borrador con precio y fecha.
 - Ilustración SVG de la casa con saludo animado, gato, pájaros, luz y jardín; respeta movimiento reducido y teclado.

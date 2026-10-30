@@ -23,9 +23,16 @@ export class AssistantStore {
   readonly message = signal('');
   private currentId: string | undefined;
   private savedText = '';
+  private savedProperty: Property | undefined;
+  private savedPreferences: ListingPreferences = { tone: 'professional', length: 'standard' };
   private workspaceRevision = 0;
   isDirty(): boolean {
-    return this.text() !== this.savedText;
+    return (
+      this.text() !== this.savedText ||
+      JSON.stringify(this.property()) !== JSON.stringify(this.savedProperty) ||
+      this.preferences().tone !== this.savedPreferences.tone ||
+      this.preferences().length !== this.savedPreferences.length
+    );
   }
   async refresh(): Promise<void> {
     try {
@@ -77,6 +84,8 @@ export class AssistantStore {
       if (this.workspaceRevision === revisionAtSave && this.currentId === idAtSave) {
         this.currentId = draft.id;
         this.savedText = draft.text;
+        this.savedProperty = draft.property;
+        this.savedPreferences = draft.preferences;
       }
       this.message.set('Borrador guardado en este navegador.');
       await this.refresh();
@@ -95,6 +104,8 @@ export class AssistantStore {
     this.preferences.set(draft.preferences);
     this.text.set(draft.text);
     this.savedText = draft.text;
+    this.savedProperty = draft.property;
+    this.savedPreferences = draft.preferences;
     this.screen.set('editor');
     this.message.set('Borrador recuperado.');
   }
@@ -102,6 +113,8 @@ export class AssistantStore {
     this.workspaceRevision += 1;
     this.currentId = undefined;
     this.savedText = '';
+    this.savedProperty = undefined;
+    this.savedPreferences = { tone: 'professional', length: 'standard' };
     this.error.set('');
   }
   async rename(draft: Draft, name: string): Promise<boolean> {
@@ -127,6 +140,8 @@ export class AssistantStore {
       if (this.currentId === id) {
         this.currentId = undefined;
         this.savedText = '';
+        this.savedProperty = undefined;
+        this.savedPreferences = { tone: 'professional', length: 'standard' };
       }
       await this.refresh();
       this.message.set('Borrador eliminado.');
@@ -140,6 +155,8 @@ export class AssistantStore {
       await this.repository.clear();
       this.currentId = undefined;
       this.savedText = '';
+      this.savedProperty = undefined;
+      this.savedPreferences = { tone: 'professional', length: 'standard' };
       this.drafts.set([]);
       this.message.set('Borradores locales eliminados. Tu texto actual sigue en el editor.');
     } catch {

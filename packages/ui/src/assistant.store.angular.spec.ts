@@ -126,4 +126,16 @@ describe('AssistantStore', () => {
       expect.objectContaining({ id: exampleDraft.id, text: exampleDraft.text }),
     );
   });
+  it('marks preference changes as unsaved even when the text has not changed', async () => {
+    // Arrange
+    const { store } = arrange();
+    await store.generate(exampleProperty);
+    await store.save();
+    const savedText = store.text();
+    // Act
+    store.preferences.update((current) => ({ ...current, tone: 'friendly' }));
+    // Assert
+    expect(store.text()).toBe(savedText);
+    expect(store.isDirty()).toBe(true);
+  });
 });
