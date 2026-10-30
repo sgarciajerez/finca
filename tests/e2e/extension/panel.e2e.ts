@@ -24,6 +24,7 @@ test('loads the MV3 package, configures the native side panel and runs the share
     const errors: string[] = [];
     page.on('pageerror', (error) => errors.push(error.message));
     await page.goto(`chrome-extension://${id}/index.html`);
+    await page.getByRole('button', { name: 'Cargar datos de ejemplo' }).click();
     await page.getByLabel('Localidad', { exact: true }).fill('Jerez de la Frontera');
     await page.getByRole('button', { name: 'Preparar mi anuncio' }).click();
     await expect(page.getByRole('heading', { name: 'Dale tu toque.' })).toBeVisible();

@@ -4,9 +4,9 @@ Asistente de anuncios inmobiliarios: una demo web Angular y una extensión de Ch
 
 ## Estado actual
 
-Dos entregas en develop: base técnica y flujo local de anuncios. Puedes validar la ficha, preparar un ejemplo determinista, cambiar tono/longitud, editar, copiar y guardar borradores; buscarlos, renombrarlos, recuperarlos o eliminarlos. Web y extensión comparten UI y casos de uso. No hay conexión con IA ni portales.
+La demo comienza con una ficha vacía para evitar publicar datos ficticios por error. Puedes cargar un ejemplo explícitamente, validar los datos, preparar un texto determinista, cambiar tono/longitud, editar, copiar y guardar borradores; buscarlos, renombrarlos, recuperarlos o eliminarlos. La ficha conserva cambios al cambiar de sección y avisa antes de reemplazarlos o cerrar la página. Web y extensión comparten UI y casos de uso. No hay conexión con IA ni portales.
 
-Los diseños HTML aprobados siguen en [designs](./designs/README.md), incluida la casa interactiva. La portada y sus animaciones todavía no se han migrado a Angular.
+La experiencia web tiene una composición amplia para escritorio y se adapta al panel de extensión y a pantallas pequeñas. Incluye una casa SVG interactiva: el vecino saluda bajo demanda y el gato, el jardín, la luz y los pájaros responden al puntero, al foco y a la preferencia de movimiento reducido. Los diseños HTML aprobados siguen en [designs](./designs/README.md).
 
 ## Requisitos e instalación
 
